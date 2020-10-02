@@ -27,8 +27,7 @@
     else
       throw new TypeError('invalid src type');
 
-    var loadingTask = pdfjsLib.getDocument(source).promise;
-    loadingTask.__PDFDocumentLoadingTask = true; // since PDFDocumentLoadingTask is not public
+    var loadingTask = pdfjsLib.getDocument(source);
 
     if (options && options.onPassword)
       loadingTask.onPassword = options.onPassword;
@@ -36,7 +35,8 @@
     if (options && options.onProgress)
       loadingTask.onProgress = options.onProgress;
 
-    return loadingTask;
+    loadingTask.promise.__PDFDocumentLoadingTask = true; // since PDFDocumentLoadingTask is not public
+    return loadingTask.promise;
   }
 
   export default {
